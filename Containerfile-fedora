@@ -1,0 +1,12 @@
+FROM registry.fedoraproject.org/fedora:latest
+
+# install cloudflare client
+RUN dnf install -y \
+        systemd \
+    && curl -fsSl https://pkg.cloudflareclient.com/cloudflare-warp-ascii.repo | tee /etc/yum.repos.d/cloudflare-warp.repo \
+    && sudo yum install -y \
+        cloudflare-warp \
+    && dnf clean all \
+    && rm -rf /var/cache/yum
+
+ENTRYPOINT ["/sbin/init"]
