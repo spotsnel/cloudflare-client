@@ -1,0 +1,15 @@
+FROM registry.access.redhat.com/ubi9/ubi-init:latest
+
+# install cloudflare client
+RUN curl -fsSl https://pkg.cloudflareclient.com/cloudflare-warp-ascii.repo | tee /etc/yum.repos.d/cloudflare-warp.repo \
+    && dnf download \
+        cloudflare-warp \
+    && rpm -ivh --nodeps cloudflare-warp-*.rpm \
+    && dnf clean all \
+    && rm -rf /var/cache/yum \
+    && rm -f cloudflare-warp-*.rpm
+
+# nothing provides desktop-file-utils
+
+# No need for entrypoint as base sets this
+#ENTRYPOINT ["/sbin/init"]
